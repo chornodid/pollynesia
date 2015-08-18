@@ -1,0 +1,5 @@
+DEV_DB_USER=user
+DEV_DB_PASSWORD=password
+
+TEST_DB_USER=user
+TEST_DB_PASSWORD=password

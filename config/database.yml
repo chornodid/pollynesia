@@ -1,0 +1,22 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+
+development:
+  <<: *default
+  database: pollynesia_dev
+  username: <%= ENV['DEV_DB_USER'] %>
+  password: <%= ENV['DEV_DB_PASSWORD'] %>
+
+test:
+  <<: *default
+  database: pollynesia_test
+  username: <%= ENV['TEST_DB_USER'] %>
+  password: <%= ENV['TEST_DB_PASSWORD'] %>
+
+production:
+  <<: *default
+  database: pollynesia
+  username: <%= ENV['DB_USER'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
