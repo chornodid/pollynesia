@@ -3,6 +3,9 @@ require 'rspec/rails'
 require 'ffaker'
 require 'database_cleaner'
 require 'shoulda/matchers'
+require 'factory_girl'
+
+Dir[Rails.root.join('spec/factories/**/*.rb')].each { |f| require f }
 
 # Run Coverage report
 require 'simplecov'
@@ -60,4 +63,6 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = :random
+
+  config.include FactoryGirl::Syntax::Methods
 end
