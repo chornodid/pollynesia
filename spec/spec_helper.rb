@@ -2,6 +2,7 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'rspec/rails'
 require 'ffaker'
 require 'database_cleaner'
+require 'shoulda/matchers'
 
 # Run Coverage report
 require 'simplecov'
@@ -20,7 +21,6 @@ end
 ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
-
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
@@ -45,7 +45,8 @@ RSpec.configure do |config|
   # Before each spec check if it is a Javascript test and switch
   # between using database transactions or not where necessary.
   config.before :each do
-    DatabaseCleaner.strategy = RSpec.current_example.metadata[:js] ? :truncation : :transaction
+    js = RSpec.current_example.metadata[:js]
+    DatabaseCleaner.strategy = js ? :truncation : :transaction
     DatabaseCleaner.start
   end
 
