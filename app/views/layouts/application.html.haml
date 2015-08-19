@@ -7,4 +7,16 @@
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
   %body
+
+    - if current_user
+      Signed in as #{current_user.email} | #{link_to "Logout", '/logout'}
+    - else
+      = link_to 'Login', '/login'
+      | #{link_to 'Signup', '/signup'}
+
+    - if flash[:alert]
+      %p.flash-error= flash[:alert]
+    - if flash[:notice]
+      %p.flash-notice= flash[:notice]
+
     = yield
