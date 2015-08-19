@@ -1,0 +1,20 @@
+AllCops:
+  Exclude:
+    - 'db/**/*'
+    - 'bin/**/*'
+    - 'config/**/*'
+
+Style/Documentation:
+  Enabled: false
+
+Style/SingleSpaceBeforeFirstArg:
+  Enabled: false
+
+Style/TrailingComma:
+  Enabled: false
+
+Style/SignalException:
+  Enabled: false
+
+LineLength:
+  Max: 80
