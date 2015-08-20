@@ -1,11 +1,10 @@
+ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
 require 'rspec/rails'
 require 'ffaker'
 require 'database_cleaner'
 require 'shoulda/matchers'
 require 'factory_girl'
-
-Dir[Rails.root.join('spec/factories/**/*.rb')].each { |f| require f }
 
 # Run Coverage report
 require 'simplecov'
