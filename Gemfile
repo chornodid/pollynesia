@@ -28,6 +28,9 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'twitter-bootstrap-rails'
 gem 'enumerize'
 gem 'highline'
+gem 'haml'
+gem 'haml-rails'
+gem 'acts_as_list'
 
 group :development, :test do
   gem 'byebug'
@@ -36,7 +39,6 @@ group :development, :test do
 end
 
 group :development do
-  gem 'haml-rails'
   gem 'rubocop'
   gem 'pry-rails'
 end
