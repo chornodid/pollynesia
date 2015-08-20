@@ -3,7 +3,7 @@ class Poll < ActiveRecord::Base
 
   belongs_to :user
   has_many :options, -> { order(position: :asc) },
-    dependent: :restrict_with_error
+           dependent: :restrict_with_error
 
   validates_uniqueness_of :title
   validates_presence_of :title, :user, :status
@@ -15,19 +15,19 @@ class Poll < ActiveRecord::Base
 
   before_save :set_event_dates, if: :status_changed?
 
-  def is_open?
+  def open?
     status == :open
   end
 
-  def is_closed?
+  def closed?
     status == :closed
   end
 
-  def is_draft?
+  def draft?
     status == :draft
   end
 
-  def is_ready?
+  def ready?
     options.count > 1
   end
 

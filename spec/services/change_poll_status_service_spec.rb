@@ -3,14 +3,13 @@ require 'change_poll_status_service'
 
 describe Service::ChangePollStatus do
   let(:poll) { create(:poll, status: old_status) }
-  let(:error) { nil }
   let(:block_mock) { double('block') }
 
   subject { Service::ChangePollStatus.new(poll) }
 
   before(:each) do
     subject.on_success { block_mock.success }
-    subject.on_failure { |message| puts(message); block_mock.error(message) }
+    subject.on_failure { |message| block_mock.error(message) }
   end
 
   shared_examples 'it_fails' do
@@ -32,7 +31,7 @@ describe Service::ChangePollStatus do
 
     context 'when old status is open' do
       let(:old_status) { :open }
-      let(:expected_message) { 'already open'}
+      let(:expected_message) { 'already open' }
       include_examples 'it_fails'
     end
 
@@ -85,9 +84,8 @@ describe Service::ChangePollStatus do
 
     context 'when old status is closed' do
       let(:old_status) { :closed }
-      let(:expected_message) { 'already closed'}
+      let(:expected_message) { 'already closed' }
       include_examples 'it_fails'
     end
-
   end
 end
