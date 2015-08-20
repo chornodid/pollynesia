@@ -1,6 +1,8 @@
 require 'pollynesia/patterns'
 
 class User < ActiveRecord::Base
+  has_many :polls, dependent: :restrict_with_error
+
   validates_presence_of :email, :firstname, :lastname
   validates_uniqueness_of :email
   validates :email, format: {
@@ -9,4 +11,8 @@ class User < ActiveRecord::Base
   }
 
   has_secure_password
+
+  def full_name
+    "#{firstname} #{lastname}"
+  end
 end
