@@ -27,37 +27,41 @@ module Service
     private
 
     def open
-      error = check_open
-      if error
-        @on_failure.call(error) if @on_failure
+      begin
+        permit_open
+        @poll.update!(status: :open)
+      rescue => e
+        raise e unless @on_failure
+        @on_failure.call(e)
         return false
       end
 
-      @poll.update!(status: :open)
       @on_success.call
       true
     end
 
-    def check_open
-      return 'Poll is already open' if @poll.is_open?
-      return "Closed poll can't be opened" if @poll.is_closed?
-      return "Poll is not ready" if !@poll.is_ready?
+    def permit_open
+      fail(ArgumentError, 'Poll is already open') if @poll.open?
+      fail(ArgumentError, "Closed poll can't be opened") if @poll.closed?
+      fail(ArgumentError, 'Poll is not ready') unless @poll.ready?
     end
 
     def close
-      error = check_close
-      if error
-        @on_failure.call(error) if @on_failure
+      begin
+        permit_close
+        @poll.update!(status: :closed)
+      rescue => e
+        raise e unless @on_failure
+        @on_failure.call(e)
         return false
       end
 
-      @poll.update!(status: :closed)
       @on_success.call
       true
     end
 
-    def check_close
-      'Poll is already closed' if @poll.is_closed?
+    def permit_close
+      fail(ArgumentError, 'Poll is already closed') if @poll.closed?
     end
   end
 end

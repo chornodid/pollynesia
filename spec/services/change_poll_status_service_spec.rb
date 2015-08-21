@@ -7,19 +7,23 @@ describe Service::ChangePollStatus do
 
   subject { Service::ChangePollStatus.new(poll) }
 
-  before(:each) do
-    subject.on_success { block_mock.success }
-    subject.on_failure { |message| block_mock.error(message) }
-  end
-
   shared_examples 'it_fails' do
+    before(:each) do
+      subject.on_failure { |e| block_mock.error(e.class, e.message) }
+    end
+
     it 'fails' do
-      expect(block_mock).to receive(:error).with(/#{expected_message}/)
+      expect(block_mock).to receive(:error).with(ArgumentError,
+                                                 /#{expected_message}/)
       expect(subject.call(event)).to be false
     end
   end
 
   shared_examples 'it_succeeds' do
+    before(:each) do
+      subject.on_success { block_mock.success }
+    end
+
     it 'succeeds' do
       expect(block_mock).to receive(:success)
       expect(subject.call(event)).to be true
@@ -86,6 +90,14 @@ describe Service::ChangePollStatus do
       let(:old_status) { :closed }
       let(:expected_message) { 'already closed' }
       include_examples 'it_fails'
+    end
+  end
+
+  context 'when on_failure block not provided' do
+    let(:old_status) { :draft }
+
+    it 'raises exception' do
+      expect { subject.call(:open) }.to raise_error(ArgumentError, /not ready/)
     end
   end
 end
