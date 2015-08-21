@@ -4,6 +4,7 @@ class Poll < ActiveRecord::Base
   belongs_to :user
   has_many :options, -> { order(position: :asc) },
            dependent: :restrict_with_error
+  has_many :votes, through: :options
 
   validates_uniqueness_of :title
   validates_presence_of :title, :user, :status
