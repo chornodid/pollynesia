@@ -111,5 +111,4 @@ describe Service::TakeVote do
       expect { subject.call }.to raise_error(ArgumentError, /not open/)
     end
   end
-
 end
