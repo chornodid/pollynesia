@@ -1,7 +1,7 @@
 class Poll < ActiveRecord::Base
   extend Enumerize
 
-  belongs_to :user
+  belongs_to :user, required: true
   has_many :options, -> { order(position: :asc) },
            dependent: :restrict_with_error
   has_many :votes, through: :options
