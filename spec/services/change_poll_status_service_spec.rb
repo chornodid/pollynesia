@@ -8,24 +8,23 @@ describe Service::ChangePollStatus do
   subject { Service::ChangePollStatus.new(poll) }
 
   shared_examples 'it_fails' do
-    before(:each) do
-      subject.on_failure { |e| block_mock.error(e.class, e.message) }
-    end
+    before { subject.on_failure { |e| block_mock.error(e.class, e.message) } }
+    before { subject.on_success { block_mock.success } }
 
     it 'fails' do
       expect(block_mock).to receive(:error).with(ArgumentError,
-                                                 /#{expected_message}/)
+                                                 /#{expected_message}/i)
+      expect(block_mock).not_to receive(:success)
       expect(subject.call(event)).to be false
     end
   end
 
   shared_examples 'it_succeeds' do
-    before(:each) do
-      subject.on_success { block_mock.success }
-    end
+    before { subject.on_success { block_mock.success } }
 
     it 'succeeds' do
       expect(block_mock).to receive(:success)
+      expect(block_mock).not_to receive(:error)
       expect(subject.call(event)).to be true
     end
   end
@@ -48,7 +47,7 @@ describe Service::ChangePollStatus do
     context 'when old status is draft' do
       let(:old_status) { :draft }
 
-      before(:each) do
+      before do
         options_count.times do
           poll.options.create(title: Faker::Lorem.word)
         end
