@@ -1,27 +1,9 @@
 %h1 Signup!
 
-= form_for @user, url: '/users' do |f|
-
-  - if @user.errors.any?
-    .error_messages
-      %strong Form is invalid
-      %ul
-        - @user.errors.full_messages.each do |message|
-          %li= message
-
-  .group
-    = f.label :firstname
-    = f.text_field :firstname
-  .group
-    = f.label :lastname
-    = f.text_field :lastname
-  .group
-    = f.label :email
-    = f.text_field :email
-  .group
-    = f.label :password
-    = f.password_field :password
-  .group
-    = f.label :password_confirmation
-    = f.password_field :password_confirmation
-  = f.submit "Create"
+= simple_form_for @user, url: '/users', html: { role: 'form' } do |f|
+  = f.input :firstname, label: 'Firstname', required: false
+  = f.input :lastname, label: 'Lastname', required: false
+  = f.input :email, label: 'Email', required: false
+  = f.input :password, label: 'Password', required: false
+  = f.input :password_confirmation, label: 'Password confirmation', required: false
+  = f.submit "Sign up", input_html: { class: 'btn btn-default', role: 'button' }

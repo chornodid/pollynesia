@@ -13,8 +13,18 @@ class User < ActiveRecord::Base
     on: :create
   }
 
+  scope :is_admin, -> { where.not(is_admin: [0, nil]) }
+  scope :is_not_admin, -> { where(is_admin: [0, nil]) }
+
   has_secure_password
 
+  def admin?
+    !is_admin.nil? && is_admin != 0
+  end
+
+  def not_admin?
+    is_admin.nil? || is_admin == 0
+  end
 
   def full_name
     "#{firstname} #{lastname}"
