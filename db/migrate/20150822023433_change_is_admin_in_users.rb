@@ -4,6 +4,7 @@ class ChangeIsAdminInUsers < ActiveRecord::Migration
   end
 
   def down
+    User.all.where(is_admin: nil).update_all(is_admin: 0)
     change_column :users, :is_admin, :integer, null: false
   end
 end
