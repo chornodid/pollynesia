@@ -28,7 +28,7 @@ module Service
 
     def permit_to_close
       @error = 'Already closed' if @poll.closed?
-      @error = 'Only author or admin is allowed to close' if \
+      @error = 'Only author or admin are allowed to close' if \
         @poll.user != @user && !@user.admin?
     end
   end

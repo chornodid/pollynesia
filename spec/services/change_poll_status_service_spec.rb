@@ -8,12 +8,11 @@ describe Service::ChangePollStatus do
   subject { Service::ChangePollStatus.new(poll) }
 
   shared_examples 'it_fails' do
-    before { subject.on_failure { |e| block_mock.error(e.class, e.message) } }
+    before { subject.on_failure { |message| block_mock.error(message) } }
     before { subject.on_success { block_mock.success } }
 
     it 'fails' do
-      expect(block_mock).to receive(:error).with(ArgumentError,
-                                                 /#{expected_message}/i)
+      expect(block_mock).to receive(:error).with(/#{expected_message}/i)
       expect(block_mock).not_to receive(:success)
       expect(subject.call(event)).to be false
     end

@@ -15,11 +15,13 @@ module Service
     end
 
     def call(event)
+      Rails.logger.info("try to change status #{@poll.id} to #{event}")
+
       case event
       when :close then close
       when :open then open
       else
-        @on_failure.call("Unknown event #{new_status}") if @on_failure
+        @on_failure.call("Unknown event #{event}") if @on_failure
         false
       end
     end
@@ -32,7 +34,8 @@ module Service
         @poll.update!(status: :open)
       rescue => e
         raise e unless @on_failure
-        @on_failure.call(e)
+        Rails.logger.error(e)
+        @on_failure.call(e.message)
         return false
       end
 
@@ -52,7 +55,7 @@ module Service
         @poll.update!(status: :closed)
       rescue => e
         raise e unless @on_failure
-        @on_failure.call(e)
+        @on_failure.call(e.message)
         return false
       end
 

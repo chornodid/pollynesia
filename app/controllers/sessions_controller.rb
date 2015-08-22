@@ -4,17 +4,15 @@ class SessionsController < ApplicationController
     if user
       session[:user_id] = user.id
       flash[:notice] = 'You have successfully logged in.'
-      redirect_to '/'
-      return
     else
       flash[:error] = "Email and password don't match."
-      redirect_to '/login'
     end
+    redirect_to root_path
   end
 
   def destroy
     session[:user_id] = nil
-    redirect_to '/login'
+    redirect_to root_path
   end
 
   private

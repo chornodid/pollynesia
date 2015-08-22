@@ -2,21 +2,44 @@
 %html
   %head
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
-    %title Pollynesia
+    %title Pollynesia - simple voting system
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
   %body
 
-    - if current_user
-      Signed in as #{current_user.email} | #{link_to "Logout", '/logout'}
-    - else
-      = link_to 'Login', '/login'
-      | #{link_to 'Signup', '/signup'}
+    %nav.navbar.navbar-default
+      .container-fluid
+        .navbar-header
+          .navbar-brand
+            = link_to 'Pollynesia', root_path
+        - if current_user
+          %ul.nav.navbar-nav
+            %li= link_to 'My polls', user_polls_path(current_user)
+            %li= link_to 'Create new poll', new_poll_path
+        %ul.nav.navbar-nav.navbar-right
+          - if current_user
+            %li
+              Signed in as
+              %b
+                = current_user.email
+            %li
+              = link_to "Logout", '/logout'
+          - else
+            %li
+              = link_to 'Sign up', signup_path
+            = form_tag '/login', class: 'from-navbar' do |f|
+              .form-inline
+                = email_field_tag :email, nil, placeholder: 'Your email', class: 'form-control'
+                = password_field_tag :password, nil, placeholder: 'Your password', class: 'form-control'
+                = submit_tag 'Sign in', class: 'btn btn-default'
+    .container-fluid
 
-    - if flash[:alert]
-      %p.flash-error= flash[:alert]
-    - if flash[:notice]
-      %p.flash-notice= flash[:notice]
+      - flash.each do |type, message|
+        - alert_class = type == 'notice' ? 'alert-info' : 'alert-danger'
+        .alert.fade.in{class: alert_class}
+          %button.close{'data-dismiss' => 'alert'}×
+          = message
 
-    = yield
+      = yield
+

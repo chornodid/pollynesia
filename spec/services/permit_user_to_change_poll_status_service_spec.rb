@@ -68,7 +68,7 @@ describe Service::PermitUserToChangePollStatus do
           let(:is_admin) { false }
           let(:author) { create(:user) }
 
-          include_examples 'it_fails', 'author or admin is allowed'
+          include_examples 'it_fails', 'author or admin are allowed'
         end
       end
     end
@@ -106,7 +106,7 @@ describe Service::PermitUserToChangePollStatus do
           let(:is_admin) { false }
           let(:author) { create(:user) }
 
-          include_examples 'it_fails', 'author or admin is allowed'
+          include_examples 'it_fails', 'author or admin are allowed'
         end
       end
     end

@@ -22,12 +22,16 @@ module Service
     end
 
     def call
+      Rails.logger.info('before permit')
+      Rails.logger.info("ip = #{@ip_address}")
+
       begin
         permit_vote
-        @option.votes.create(user: @user, ip_address: @ip_address)
+        Rails.logger.info('before create')
+        @option.votes.create!(user: @user, ip_address: @ip_address)
       rescue => e
         raise e unless @on_failure
-        @on_failure.call(e)
+        @on_failure.call(e.message)
         return false
       end
 

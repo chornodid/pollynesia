@@ -1,1 +1,16 @@
-%h1 Polls
+%h1
+  = @title
+%table.table
+  %tr
+    %th.col-md-5 Title
+    %th.col-md-1 Votes taken
+    %th.col-md-2 Author
+    %th.col-md-2 Opened at
+    %th.col-md-2 Status
+  - @polls.each do |poll|
+    %tr
+      %td= link_to poll.title, poll_path(poll)
+      %td= poll.options.map(&:votes_count).sum
+      %td= link_to poll.user.full_name, user_polls_path(poll.user)
+      %td= poll.open_date
+      %td= poll.status
