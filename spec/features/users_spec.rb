@@ -15,7 +15,7 @@ feature 'User signup' do
     before :each do
       visit signup_path
       fill_fields
-      click_button 'Create'
+      click_button 'Sign up'
     end
 
     it 'redirects to index page' do
@@ -32,7 +32,7 @@ feature 'User signup' do
     before :each do
       visit signup_path
       fill_fields(:password_confirmation)
-      click_button 'Create'
+      click_button 'Sign up'
     end
 
     it 'renders new user page' do
@@ -40,8 +40,7 @@ feature 'User signup' do
     end
 
     it 'shows errors' do
-      expect(page).to have_content(/invalid/i)
-      expect(page).to have_content(/password/i)
+      expect(page).to have_content(/doesn't match password/i)
     end
 
     it 'leaves filled fields' do
