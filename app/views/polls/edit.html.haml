@@ -1,4 +1,4 @@
-%h2 New poll
+%h2 Edit poll
 = simple_form_for @poll do |f|
   = f.input :title, required: false
   %h3 Options
@@ -7,4 +7,4 @@
       = render 'option_fields', f: option
     .links
       = link_to_add_association 'Add option', f, :options, class: 'btn btn-info'
-  = f.button :submit, 'Create poll', class: 'btn btn-success btn-lg'
+  = f.button :submit, 'Update poll', class: 'btn btn-success btn-lg'

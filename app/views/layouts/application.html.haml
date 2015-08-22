@@ -8,7 +8,7 @@
     = csrf_meta_tags
   %body
 
-    %nav.navbar.navbar-default
+    %nav.navbar
       .container-fluid
         .navbar-header
           .navbar-brand
@@ -20,8 +20,8 @@
         %ul.nav.navbar-nav.navbar-right
           - if current_user
             %li
-              Signed in as
-              %b
+              %p.navbar-text
+                Signed in as
                 = current_user.email
             %li
               = link_to "Logout", '/logout'

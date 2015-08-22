@@ -3,8 +3,9 @@ class Poll < ActiveRecord::Base
 
   belongs_to :user, required: true
   has_many :options, -> { order(position: :asc) },
-           dependent: :restrict_with_error
+           dependent: :restrict_with_error, inverse_of: :poll
   has_many :votes, through: :options
+  accepts_nested_attributes_for :options, reject_if: :all_blank, allow_destroy: true
 
   validates_uniqueness_of :title
   validates_presence_of :title, :user, :status

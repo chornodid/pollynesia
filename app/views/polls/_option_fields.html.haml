@@ -1,0 +1,5 @@
+.nested-fields.well.well-compact
+  .form-inline
+    = f.input :title, required: false, label: false, placeholder: 'Title'
+    = f.input :position, required: false, label: false, placeholder: 'Change position'
+    = link_to_remove_association "Remove option", f, class: 'btn btn-danger'

@@ -8,23 +8,21 @@
     %b= @poll.open_date
 
 %table.table
-  %tr
-    %th.col-md-1 Position
-    %th.col-md-1
-    %th.col-md-7 Option
-    %th.col-md-3 Votes taken
   - @poll.options.each_with_index do |option, index|
     %tr
-      %td= index+1
-      %td
-        -# unless @already_taken
-        = button_to 'Vote!', create_vote_path(option), class: 'btn btn-default', confirm: "Are you sure?"
-      %td
+      %td.col-md-1
+        - if @poll.open? && !@already_taken
+          = button_to 'Vote!', create_vote_path(option), class: 'btn btn-default', confirm: "Are you sure?"
+      %td.col-md-1
+        %span.badge{'style' => "font-size: 36px"}
+          = option.votes_count
+      %td.col-md-10
         = option.title
-      %td
-        = option.votes_count
 
-- if !@poll.closed?
-  = button_to 'Close poll!', poll_change_status_path(@poll, :close), class: 'btn btn-danger btn-lg'
-- if @poll.draft?
-  = button_to 'Open poll!', poll_change_status_path(@poll, :open), class: 'btn btn-success btn-lg'
+- if current_user
+  - if @poll.draft?
+    = link_to 'Edit', edit_poll_path(@poll), class: 'btn btn-primary btn-lg'
+    - if @poll.ready?
+      = button_to 'Open!', poll_change_status_path(@poll, :open), class: 'btn btn-success btn-lg', data: { confirm: 'Are you sure?'}
+  - if !@poll.closed?
+    = button_to 'Close!', poll_change_status_path(@poll, :close), class: 'btn btn-danger btn-lg', data: { confirm: 'Are you sure?'}

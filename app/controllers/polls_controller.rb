@@ -2,8 +2,9 @@ require 'change_poll_status_service'
 require 'permit_user_to_change_poll_status_service'
 
 class PollsController < ApplicationController
-  before_filter :authorize, except: [:current, :index, :show]
-  before_filter :find_poll, only: [:show, :edit, :change_status]
+  before_filter :authorize, except: [:current, :show]
+  before_filter :find_poll, except: [:current, :index, :new, :create]
+  before_filter :authenticate, only: [:update]
 
   def index
     @polls = Poll.order(created_at: :desc)
@@ -23,8 +24,31 @@ class PollsController < ApplicationController
   end
 
   def new
-    @poll = Poll.new(params[:poll])
+    @poll = Poll.new(params[:project])
     @poll.user = current_user
+  end
+
+  def edit
+    @poll.options.order(position: :desc)
+  end
+
+  def update
+    if @poll.update(permit_params)
+      redirect_to poll_path(@poll), notice: 'Poll has been succesfully updated'
+    else
+      render action: "edit"
+    end
+  end
+
+  def create
+    @poll = Poll.new(permit_params)
+    @poll.user = current_user
+    if @poll.save
+      redirect_to poll_path(@poll), notice: 'Poll has been succesfully created'
+    else
+      byebug
+      render action: "new"
+    end
   end
 
   def show
@@ -58,5 +82,18 @@ class PollsController < ApplicationController
     return true if service.allowed?
     redirect_to poll_path(@poll), alert: service.error
     false
+  end
+
+  def authenticate
+    redirect_to(
+      poll_path(@poll),
+      alert: 'Only author is allowed to update poll'
+    ) unless @poll.user == current_user
+  end
+
+  def permit_params
+    params.require(:poll).permit(
+      :title, options_attributes: [:id, :title, :position, :_destroy]
+    )
   end
 end

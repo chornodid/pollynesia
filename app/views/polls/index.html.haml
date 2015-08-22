@@ -2,15 +2,21 @@
   = @title
 %table.table
   %tr
-    %th.col-md-5 Title
-    %th.col-md-1 Votes taken
+    %th.col-md-6 Title
     %th.col-md-2 Author
-    %th.col-md-2 Opened at
-    %th.col-md-2 Status
+    %th.col-md-4 Opened/closed at
   - @polls.each do |poll|
     %tr
-      %td= link_to poll.title, poll_path(poll)
-      %td= poll.options.map(&:votes_count).sum
+      %td
+        = link_to poll.title, poll_path(poll)
+        %span.label{class: bootstrap_label_class_for_poll_status(poll.status)}= poll.status
+        %span.badge{'style' => "font-size: 24px"}
+          = poll.options.map(&:votes_count).sum
       %td= link_to poll.user.full_name, user_polls_path(poll.user)
-      %td= poll.open_date
-      %td= poll.status
+      %td
+        -if poll.open_date
+          %span.label{class: bootstrap_label_class_for_poll_status('open')}
+            = poll.open_date
+        -if poll.close_date
+          %span.label{class: bootstrap_label_class_for_poll_status('closed')}
+            = poll.close_date
