@@ -7,6 +7,6 @@ module ApplicationHelper
     { 'draft' => 'label-warning',
       'open' => 'label-success',
       'closed' => 'label-danger'
-    }[@poll.status.to_s] || 'label-default'
+    }[status.to_s] || 'label-default'
   end
 end
