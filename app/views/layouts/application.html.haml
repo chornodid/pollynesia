@@ -37,8 +37,7 @@
     .container-fluid
 
       - flash.each do |type, message|
-        - alert_class = type == 'notice' ? 'alert-info' : 'alert-danger'
-        .alert.fade.in{class: alert_class}
+        .alert.fade.in{class: bootstrap_alert_class_for_flash_type(type)}
           %button.close{'data-dismiss' => 'alert'}×
           = message
 
