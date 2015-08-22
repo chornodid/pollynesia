@@ -31,6 +31,7 @@ gem 'highline'
 gem 'haml'
 gem 'haml-rails'
 gem 'acts_as_list'
+gem 'simple_form'
 
 group :development, :test do
   gem 'byebug'
