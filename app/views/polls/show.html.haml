@@ -1,23 +1,11 @@
 %h1
   = @poll.title
+  %span.label{class: bootstrap_label_class_for_poll_status(@poll.status)}= @poll.status
   %small
     by
     %b= link_to @poll.user.full_name, user_polls_path(@poll.user)
     opened
     %b= @poll.open_date
-
-.btn-group{role: 'group'}
-- if @poll.open?
-  = submit_tag 'Opened', type: 'button', disabled: true, class: 'btn btn-success'
-- elsif @poll.closed?
-  = submit_tag 'Closed', type: 'button', disabled: true, class: 'btn btn-danger'
-- elsif @poll.draft?
-  = submit_tag 'Draft', type: 'button', disabled: true, class: 'btn btn-warning'
-
-- if !@poll.closed?
-  = button_to 'Close poll!', poll_change_status_path(@poll, :close), class: 'btn btn-danger'
-- if @poll.draft?
-  = button_to 'Open poll!', poll_change_status_path(@poll, :open), class: 'btn btn-success'
 
 %table.table
   %tr
@@ -33,6 +21,10 @@
         = button_to 'Vote!', create_vote_path(option), class: 'btn btn-default', confirm: "Are you sure?"
       %td
         = option.title
+      %td
+        = option.votes_count
 
-      %td= option.votes_count
-
+- if !@poll.closed?
+  = button_to 'Close poll!', poll_change_status_path(@poll, :close), class: 'btn btn-danger btn-lg'
+- if @poll.draft?
+  = button_to 'Open poll!', poll_change_status_path(@poll, :open), class: 'btn btn-success btn-lg'
