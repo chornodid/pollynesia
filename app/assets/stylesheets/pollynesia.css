@@ -1,0 +1,7 @@
+.btn {
+  margin: 3px;
+}
+.button_to,
+.button_to div {
+  display: inline;
+}
