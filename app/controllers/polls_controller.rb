@@ -36,7 +36,7 @@ class PollsController < ApplicationController
     if @poll.update(permit_params)
       redirect_to poll_path(@poll), notice: 'Poll has been succesfully updated'
     else
-      render action: "edit"
+      render action: 'edit'
     end
   end
 
@@ -46,8 +46,7 @@ class PollsController < ApplicationController
     if @poll.save
       redirect_to poll_path(@poll), notice: 'Poll has been succesfully created'
     else
-      byebug
-      render action: "new"
+      render action: 'new'
     end
   end
 
